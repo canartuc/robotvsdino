@@ -8,6 +8,7 @@ import (
 )
 
 func main() {
+	InitBoard()
 
 	runningPort := os.Getenv("PORT")
 
@@ -37,6 +38,15 @@ func startGinServer() *gin.Engine {
 
 	// Route: Index
 	v.GET("/", RouteIndex)
+
+	// Route: Board
+	board := v.Group("/board")
+	board.GET("/create", CreateBoard)
+
+	// Route: Robot
+	robot := v.Group("/robot")
+	robot.GET("/create/:row/:column/:face", CreateRobot)
+	robot.GET("/move/:row/:column/:face", MoveRobot)
 
 	return r
 }
