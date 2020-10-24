@@ -52,11 +52,18 @@ func MoveRobot(c *gin.Context) {
 	faceDir := strings.ToLower(Face[face])
 
 	moveRow, moveCol, moveFace, err := MoveRobotState(rowInt, columnInt, faceDir)
-	moveColLetter, err := ReturnKeyFromValueMap(Column, moveCol)
+	moveColLetter, errColLetter := ReturnKeyFromValueMap(Column, moveCol)
 
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
-			"msg":          err,
+			"msg":          err.Error(),
+			"robot_row":    moveRow,
+			"robot_column": moveCol,
+			"robot_face":   moveFace,
+		})
+	} else if errColLetter != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"msg":          errColLetter.Error(),
 			"robot_row":    moveRow,
 			"robot_column": moveCol,
 			"robot_face":   moveFace,

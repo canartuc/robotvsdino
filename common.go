@@ -60,13 +60,6 @@ func ReturnKeyFromValueMap(m map[string]int, val int) (key string, err error) {
 
 // MoveRobotState is the state machine of robot movement
 func MoveRobotState(row int, column int, face string) (newRow int, newColumn int, newFace string, err error) {
-	if !CheckCell(newRow, newColumn) {
-		newRow = row
-		newColumn = column
-		newFace = face
-		err = errors.New("robot cannot move. The cell may not be empty, outside the boundry or wrong parameters")
-		return
-	}
 	if CheckType(row, column) == "r" {
 		if strings.ToLower(face) == "east" {
 			newRow = row
@@ -94,6 +87,17 @@ func MoveRobotState(row int, column int, face string) (newRow int, newColumn int
 			newFace = face
 			err = errors.New("unrecognized direction for movement")
 		}
+	} else {
+		newRow = row
+		newColumn = column
+		newFace = face
+		err = errors.New("only robots can move. There is no robot in the cell")
+	}
+	if !CheckCell(newRow, newColumn) {
+		newRow = row
+		newColumn = column
+		newFace = face
+		err = errors.New("robot can move to only empty cell")
 	}
 	return
 }
