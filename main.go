@@ -41,6 +41,7 @@ func startGinServer() *gin.Engine {
 	// Route: Board
 	board := v.Group(BOARDGROUP)
 	board.GET("/create", CreateBoard)
+	board.GET("/status", ShowBoardStatus)
 
 	// Route: Robot
 	robot := v.Group(ROBOTGROUP)

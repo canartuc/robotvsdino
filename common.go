@@ -2,8 +2,22 @@ package main
 
 import (
 	"errors"
+	"fmt"
 	"strings"
 )
+
+// BoardStatus struct will be used to give the board status based on some counts
+// This is idiomatic way to use in Golang but I prefer simple function-based writing style in general as I don't know
+// who will check the code, s/he has Golang knowledge or not. I put here one sample for idiomatic Golang
+type BoardStatus struct {
+	Msg              string `json:"msg"`
+	TotalRobot       int    `json:"total_robot"`
+	TotalDinosaur    int    `json:"total_dinosaur"`
+	TotalEmpty       int    `json:"total_empty"`
+	RobotPosition    string `json:"robot_position"`
+	DinosaurPosition string `json:"dinosaur_position"`
+	EmptyPosition    string `json:"empty_position"`
+}
 
 // CheckLowerUpperBound checks the lower and upper bound of the board as defined in consdef.go file
 func CheckLowerUpperBound(row int, col int) bool {
@@ -37,9 +51,9 @@ func CheckType(row int, column int) string {
 // Robots have face so first is type (e: empty, r: robot, d: dinosaur) and the second is face direction
 // (e: empty, west, north, east, south)
 func InitBoard() {
-	for i := 0; i < UPPERBOUND + 1; i++ {
-		Board[i] = make([]string, UPPERBOUND + 1)
-		for j := 0; j < UPPERBOUND + 1; j++ {
+	for i := 0; i < UPPERBOUND+1; i++ {
+		Board[i] = make([]string, UPPERBOUND+1)
+		for j := 0; j < UPPERBOUND+1; j++ {
 			Board[i][j] = "e:e"
 		}
 	}
@@ -50,8 +64,8 @@ func InitBoard() {
 // the initialization
 func CheckBoardInit() bool {
 	res := false
-	for i := 0; i < UPPERBOUND + 1; i++ {
-		for j := 0; j < UPPERBOUND + 1; j++ {
+	for i := 0; i < UPPERBOUND+1; i++ {
+		for j := 0; j < UPPERBOUND+1; j++ {
 			if Board[i][j] == "e:e" {
 				res = true
 			} else {
@@ -60,6 +74,38 @@ func CheckBoardInit() bool {
 		}
 	}
 	return res
+}
+
+func GetBoardStatus() BoardStatus {
+	var bs BoardStatus
+	bs.TotalEmpty = 0
+	bs.TotalDinosaur = 0
+	bs.TotalRobot = 0
+	bs.EmptyPosition = ""
+	bs.RobotPosition = ""
+	bs.DinosaurPosition = ""
+
+	for i := 0; i < UPPERBOUND+1; i++ {
+		for j := 0; j < UPPERBOUND+1; j++ {
+			spl := strings.Split(Board[i][j], ":")
+			col, _ := ReturnKeyFromValueMap(Column, j)
+			if spl[0] == "e" {
+				bs.TotalEmpty++
+				bs.EmptyPosition += fmt.Sprintf("%d:%s, ", i+1, col)
+			} else if spl[0] == "r" {
+				bs.TotalRobot++
+				bs.RobotPosition += fmt.Sprintf("%d:%s, ", i+1, col)
+			} else if spl[0] == "d" {
+				bs.TotalDinosaur++
+				bs.DinosaurPosition += fmt.Sprintf("%d:%s, ", i+1, col)
+			}
+		}
+	}
+
+	bs.Msg = fmt.Sprintf("Total empty space %d, robot existance %d and dinosaur occupation %d",
+		bs.TotalEmpty, bs.TotalRobot, bs.TotalDinosaur*100)
+
+	return bs
 }
 
 // ReturnKeyFromValueMap checks value of the map and return its key

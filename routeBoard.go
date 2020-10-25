@@ -21,3 +21,8 @@ func CreateBoard(c *gin.Context) {
 	fmt.Println(Board)
 	fmt.Println(len(Board))
 }
+
+func ShowBoardStatus(c *gin.Context) {
+	bs := GetBoardStatus()
+	c.JSON(http.StatusOK, bs)
+}
