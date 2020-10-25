@@ -129,7 +129,7 @@ func AttackRobot(c *gin.Context) {
 		Board[moveRow][moveCol] = fmt.Sprintf("r:%s", moveFace)
 
 		c.JSON(http.StatusCreated, gin.H{
-			"msg": fmt.Sprintf("Robot moved to row %d, column %s and face %s",
+			"msg": fmt.Sprintf("Robot attacked to row %d, column %s and face %s",
 				moveRow+1, moveColLetter, face),
 			"robot_row":    rowInt,
 			"robot_column": moveCol,

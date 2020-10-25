@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
@@ -17,9 +16,6 @@ func CreateBoard(c *gin.Context) {
 			"msg": "Board has already been created!",
 		})
 	}
-
-	fmt.Println(Board)
-	fmt.Println(len(Board))
 }
 
 func ShowBoardStatus(c *gin.Context) {

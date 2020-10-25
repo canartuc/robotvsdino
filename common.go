@@ -21,7 +21,7 @@ type BoardStatus struct {
 
 // CheckLowerUpperBound checks the lower and upper bound of the board as defined in consdef.go file
 func CheckLowerUpperBound(row int, col int) bool {
-	if (row < UPPERBOUND+1 && row >= LOWERBOUND) || (col < UPPERBOUND+1 && col >= LOWERBOUND) {
+	if (row < UPPERBOUND+1 && row >= LOWERBOUND) && (col < UPPERBOUND+1 && col >= LOWERBOUND) {
 		return true
 	}
 	return false
@@ -60,8 +60,8 @@ func InitBoard() {
 }
 
 // CheckBoardInit checks the initialization of the board because we should not initialize it again after the
-// initial initialization. Initialization makes every cells empty so we will lose the movements if we don't check
-// the initialization
+// first action. Initialization makes every cells empty so we will lose the movements if we don't check
+// the initialization. If the board is already full of emptiness, board can be initialized again.
 func CheckBoardInit() bool {
 	res := false
 	for i := 0; i < UPPERBOUND+1; i++ {
@@ -103,7 +103,7 @@ func GetBoardStatus() BoardStatus {
 	}
 
 	bs.Msg = fmt.Sprintf("Total empty space %d, robot existance %d and dinosaur occupation %d",
-		bs.TotalEmpty, bs.TotalRobot, bs.TotalDinosaur*100)
+		bs.TotalEmpty, bs.TotalRobot, bs.TotalDinosaur)
 
 	return bs
 }
@@ -160,7 +160,7 @@ func MoveRobotState(row int, column int, face string) (newRow int, newColumn int
 	}
 
 	// After movement defined and state machine defined, check the movement if it is inside the board
-	if CheckLowerUpperBound(newRow, newColumn) {
+	if !CheckLowerUpperBound(newRow, newColumn) {
 		newRow = row
 		newColumn = column
 		newFace = face

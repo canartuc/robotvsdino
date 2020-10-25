@@ -26,6 +26,7 @@ func TestMoveRobotState(t *testing.T) {
 	for _, tt := range tests {
 		testName := fmt.Sprintf("Edge case (row:col:move): %d:%d:%s", tt.row, tt.col, tt.face)
 		t.Run(testName, func(t *testing.T) {
+			Board[tt.row][tt.col] = fmt.Sprintf("r:%s", tt.face)
 			_, _, _, err := MoveRobotState(tt.row, tt.col, tt.face)
 			if err != nil {
 				if err.Error() != tt.errMes {

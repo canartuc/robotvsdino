@@ -18,8 +18,6 @@ func CreateDinosaur(c *gin.Context) {
 	}
 	columnInt := Column[column]
 
-	fmt.Println(rowInt, columnInt)
-
 	if CheckCell(rowInt, columnInt) {
 		Board[rowInt][columnInt] = "d:e"
 		c.JSON(http.StatusCreated, gin.H{
@@ -32,6 +30,4 @@ func CreateDinosaur(c *gin.Context) {
 			"msg": "Dinosaur cannot be created. The cell may not be empty, outside the boundry or wrong parameters",
 		})
 	}
-
-	fmt.Println(Board)
 }
