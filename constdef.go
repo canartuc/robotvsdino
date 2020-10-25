@@ -1,11 +1,30 @@
 package main
 
+// LOWERBOUND and UPPERBOUND of initialized board. This is programming bounds so it always begins with 0
+// so ends with logical upper - 1
+const (
+	LOWERBOUND = 0
+	UPPERBOUND = 49
+)
+
+// In future, if there will be new version and deprecation notices, REQUESTGROUP will save the life or helps
+// for canary releases. http(s)://IP_OR_DOMAIN:PORT/REQUESTGROUP/WHATEVERTHEREST
+const REQUESTGROUP = "/api/v1"
+
+// BOARDGROUP, ROBOTGROUP and DINOSAURGROUP defines URL request grouping after REQUESTGROUP
+// http(s)://IP_OR_DOMAIN:PORT/REQUESTGROUP/[BOARDGROUP||ROBOTGROUP||DINOSAURGROUP]/ACTION/WHATEVERTHEREST
+const (
+	BOARDGROUP = "/board"
+	ROBOTGROUP = "/robot"
+	DINOSAURGROUP = "/dinosaur"
+)
+
 // Board is global scope variable and the main unit to play on
 // We define here as we will share this structure with dinosaur and robot because there is no long term storage
 // in this project but temporary.
-var Board = make([][]string, 50)
+var Board = make([][]string, UPPERBOUND + 1)
 
-// In programming, row and column define as integer value but in human world, we are using letter for column
+// In programming, row and column define as integer value but in human world, we are using letter for Column
 // for games generally - for example: Chess board
 var Column = map[string]int{
 	"A":  0,
@@ -60,6 +79,8 @@ var Column = map[string]int{
 	"AX": 49,
 }
 
+// Face will be used for last face of robots as well as moving direction. The remove ambiguity, I replaced
+// directions with cardinal directions/points
 var Face = map[string]string{
 	"RIGHT":  "east",
 	"LEFT":   "west",

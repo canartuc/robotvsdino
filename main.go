@@ -33,18 +33,17 @@ func startGinServer() *gin.Engine {
 	r := gin.Default()
 
 	// Group the API with version
-	api := r.Group("/api")
-	v := api.Group("/v1")
+	v := r.Group(REQUESTGROUP)
 
 	// Route: Index
 	v.GET("/", RouteIndex)
 
 	// Route: Board
-	board := v.Group("/board")
+	board := v.Group(BOARDGROUP)
 	board.GET("/create", CreateBoard)
 
 	// Route: Robot
-	robot := v.Group("/robot")
+	robot := v.Group(ROBOTGROUP)
 	robot.GET("/create/:row/:column/:face", CreateRobot)
 	robot.GET("/move/:row/:column/:face", MoveRobot)
 

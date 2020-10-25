@@ -2,11 +2,27 @@ package main
 
 import (
 	"errors"
+	"net/http"
+	"net/http/httptest"
 	"strings"
 )
 
+func PerformRequest(r http.Handler, method, path string) *httptest.ResponseRecorder {
+	req, _ := http.NewRequest(method, path, nil)
+	w := httptest.NewRecorder()
+	r.ServeHTTP(w, req)
+	return w
+}
+
+func CheckLowerUpperBound(row int, col int) bool {
+	if (row < UPPERBOUND + 1 && row >= LOWERBOUND) || (col < UPPERBOUND + 1 && col >= LOWERBOUND) {
+		return true
+	}
+	return false
+}
+
 func CheckCell(row int, column int) bool {
-	if (row < 50 && row >= 0) || (column < 50 && column >= 0) {
+	if CheckLowerUpperBound(row, column) {
 		s := strings.Split(Board[row][column], ":")
 		if s[0] == "e" {
 			return true
@@ -16,7 +32,7 @@ func CheckCell(row int, column int) bool {
 }
 
 func CheckType(row int, column int) string {
-	if (row < 50 && row >= 0) || (column < 50 && column >= 0) {
+	if CheckLowerUpperBound(row, column) {
 		s := strings.Split(Board[row][column], ":")
 		return s[0]
 	}
@@ -92,6 +108,12 @@ func MoveRobotState(row int, column int, face string) (newRow int, newColumn int
 		newColumn = column
 		newFace = face
 		err = errors.New("only robots can move. There is no robot in the cell")
+	}
+	if CheckLowerUpperBound(newRow, newColumn) {
+		newRow = row
+		newColumn = column
+		newFace = face
+		err = errors.New("out of index boundries")
 	}
 	if !CheckCell(newRow, newColumn) {
 		newRow = row
