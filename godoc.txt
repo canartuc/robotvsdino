@@ -1,0 +1,173 @@
+package main // import "com.canartuc.robotvsdino"
+
+
+CONSTANTS
+
+const (
+	LOWERBOUND = 0
+	UPPERBOUND = 49
+)
+    LOWERBOUND and UPPERBOUND of initialized board. This is programming bounds
+    so it always begins with 0 so ends with logical upper - 1
+
+const (
+	BOARDGROUP    = "/board"
+	ROBOTGROUP    = "/robot"
+	DINOSAURGROUP = "/dinosaur"
+)
+    BOARDGROUP, ROBOTGROUP and DINOSAURGROUP defines URL request grouping after
+    REQUESTGROUP
+    http(s)://IP_OR_DOMAIN:PORT/REQUESTGROUP/[BOARDGROUP||ROBOTGROUP||DINOSAURGROUP]/ACTION/WHATEVERTHEREST
+
+const REQUESTGROUP = "/api/v1"
+    In future, if there will be new version and deprecation notices,
+    REQUESTGROUP will save the life or helps for canary releases.
+    http(s)://IP_OR_DOMAIN:PORT/REQUESTGROUP/WHATEVERTHEREST
+
+
+VARIABLES
+
+var Board = make([][]string, UPPERBOUND+1)
+    Board is global scope variable and the main unit to play on We define here
+    as we will share this structure with dinosaur and robot because there is no
+    long term storage in this project but temporary.
+
+var Column = map[string]int{
+	"A":  0,
+	"B":  1,
+	"C":  2,
+	"D":  3,
+	"E":  4,
+	"F":  5,
+	"G":  6,
+	"H":  7,
+	"I":  8,
+	"J":  9,
+	"K":  10,
+	"L":  11,
+	"M":  12,
+	"N":  13,
+	"O":  14,
+	"P":  15,
+	"Q":  16,
+	"R":  17,
+	"S":  18,
+	"T":  19,
+	"U":  20,
+	"V":  21,
+	"W":  22,
+	"X":  23,
+	"Y":  24,
+	"Z":  25,
+	"AA": 26,
+	"AB": 27,
+	"AC": 28,
+	"AD": 29,
+	"AE": 30,
+	"AF": 31,
+	"AG": 32,
+	"AH": 33,
+	"AI": 34,
+	"AJ": 35,
+	"AK": 36,
+	"AL": 37,
+	"AM": 38,
+	"AN": 39,
+	"AO": 40,
+	"AP": 41,
+	"AQ": 42,
+	"AR": 43,
+	"AS": 44,
+	"AT": 45,
+	"AU": 46,
+	"AV": 47,
+	"AW": 48,
+	"AX": 49,
+}
+    In programming, row and column define as integer value but in human world,
+    we are using letter for Column for games generally - for example: Chess
+    board
+
+var Face = map[string]string{
+	"RIGHT":  "east",
+	"LEFT":   "west",
+	"TOP":    "north",
+	"BOTTOM": "south",
+}
+    Face will be used for last face of robots as well as moving direction. The
+    remove ambiguity, I replaced directions with cardinal directions/points
+
+
+FUNCTIONS
+
+func AttackRobot(c *gin.Context)
+    AttackRobot manages robot attacks based on dinosaur availability around
+
+func CheckBoardInit() bool
+    CheckBoardInit checks the initialization of the board because we should not
+    initialize it again after the first action. Initialization makes every cells
+    empty so we will lose the movements if we don't check the initialization. If
+    the board is already full of emptiness, board can be initialized again.
+
+func CheckCell(row int, column int) bool
+    CheckCell returns true if the cell is empty (e) or false if not
+
+func CheckLowerUpperBound(row int, col int) bool
+    CheckLowerUpperBound checks the lower and upper bound of the board as
+    defined in consdef.go file
+
+func CheckType(row int, column int) string
+    CheckType returns the type of the cell as e: empty, r: robot and d: dinosaur
+
+func CreateBoard(c *gin.Context)
+    CreateBoard creates empty board depends on UPPERBOUND limit
+
+func CreateDinosaur(c *gin.Context)
+    CreateDinosaur creates dinosaur based on condition as if cell is empty or
+    not
+
+func CreateRobot(c *gin.Context)
+    CreateRobot creates robot if the cell is empty
+
+func InitBoard()
+    InitBoard initialize the board with full of empty values Robots have face so
+    first is type (e: empty, r: robot, d: dinosaur) and the second is face
+    direction (e: empty, west, north, east, south)
+
+func MoveRobot(c *gin.Context)
+    MoveRobot manages movement of the robot based on cell emptiness
+
+func MoveRobotState(row int, column int, face string) (newRow int, newColumn int, newFace string, err error)
+    MoveRobotState is the state machine of robot movement
+
+func ReturnKeyFromValueMap(m map[string]int, val int) (key string, err error)
+    ReturnKeyFromValueMap checks value of the map and return its key
+
+func RouteIndex(c *gin.Context)
+    RouteIndex is main dummy index
+
+func ShowBoardStatus(c *gin.Context)
+    ShowBoardStatus shows board status which is coming from common function
+
+
+TYPES
+
+type BoardStatus struct {
+	Msg              string `json:"msg"`
+	TotalRobot       int    `json:"total_robot"`
+	TotalDinosaur    int    `json:"total_dinosaur"`
+	TotalEmpty       int    `json:"total_empty"`
+	RobotPosition    string `json:"robot_position"`
+	DinosaurPosition string `json:"dinosaur_position"`
+	EmptyPosition    string `json:"empty_position"`
+}
+    BoardStatus struct will be used to give the board status based on some
+    counts This is idiomatic way to use in Golang but I prefer simple
+    function-based writing style in general as I don't know who will check the
+    code, s/he has Golang knowledge or not. I put here one sample for idiomatic
+    Golang
+
+func GetBoardStatus() BoardStatus
+    GetBoardStatus returns the board status as structure. It is extensive
+    information for what's going on
+
