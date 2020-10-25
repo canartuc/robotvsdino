@@ -48,5 +48,9 @@ func startGinServer() *gin.Engine {
 	robot.GET("/move/:row/:column/:face", MoveRobot)
 	robot.GET("/attack/:row/:column/:face", AttackRobot)
 
+	// Route: Dinosaur
+	dino := v.Group(DINOSAURGROUP)
+	dino.GET("/create/:row/:column", CreateDinosaur)
+
 	return r
 }
