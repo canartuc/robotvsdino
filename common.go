@@ -94,7 +94,7 @@ func GetBoardStatus() BoardStatus {
 				bs.EmptyPosition += fmt.Sprintf("%d:%s, ", i+1, col)
 			} else if spl[0] == "r" {
 				bs.TotalRobot++
-				bs.RobotPosition += fmt.Sprintf("%d:%s, ", i+1, col)
+				bs.RobotPosition += fmt.Sprintf("%d:%s:%s, ", i+1, col, spl[1])
 			} else if spl[0] == "d" {
 				bs.TotalDinosaur++
 				bs.DinosaurPosition += fmt.Sprintf("%d:%s, ", i+1, col)
@@ -122,7 +122,7 @@ func ReturnKeyFromValueMap(m map[string]int, val int) (key string, err error) {
 }
 
 // MoveRobotState is the state machine of robot movement
-func MoveRobotState(row int, column int, face string, attack bool) (newRow int, newColumn int, newFace string, err error) {
+func MoveRobotState(row int, column int, face string) (newRow int, newColumn int, newFace string, err error) {
 	// Move robot to the next cell without checking any condition. Next cell may be north, south, west and east cell
 	// and only one step. Nothing is movable other than robots so checking if it is robot or not
 	if CheckType(row, column) == "r" {
@@ -169,20 +169,5 @@ func MoveRobotState(row int, column int, face string, attack bool) (newRow int, 
 
 	// Robots can also attack. Normally robot cannot move to any other cell if the cell is not empty but in attack mode
 	// robot can move to non-empty cell which is allocated with dinosaur
-	if attack {
-		if CheckType(newRow, newColumn) == "d" {
-			err = nil
-		}
-
-	} else {
-		// In case robot is not in attack mode, checking the cell if it is empty or not to perform movement or not
-		if !CheckCell(newRow, newColumn) {
-			newRow = row
-			newColumn = column
-			newFace = face
-			err = errors.New("robot can move to only empty cell")
-		}
-	}
-
 	return
 }

@@ -21,7 +21,7 @@ func CreateDinosaur(c *gin.Context) {
 	fmt.Println(rowInt, columnInt)
 
 	if CheckCell(rowInt, columnInt) {
-		Board[rowInt][columnInt] = "d"
+		Board[rowInt][columnInt] = "d:e"
 		c.JSON(http.StatusCreated, gin.H{
 			"msg":             fmt.Sprintf("Dinosaur created at row %s, column %s", row, column),
 			"dinosaur_row":    rowInt,

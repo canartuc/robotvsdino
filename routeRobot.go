@@ -19,8 +19,6 @@ func CreateRobot(c *gin.Context) {
 	}
 	columnInt := Column[column]
 
-	fmt.Println(rowInt, columnInt)
-
 	if CheckCell(rowInt, columnInt) {
 		faceDir := strings.ToLower(Face[face])
 		Board[rowInt][columnInt] = fmt.Sprintf("r:%s", faceDir)
@@ -35,8 +33,6 @@ func CreateRobot(c *gin.Context) {
 			"msg": "Robot cannot be created. The cell may not be empty, outside the boundry or wrong parameters",
 		})
 	}
-
-	fmt.Println(Board)
 }
 
 func MoveRobot(c *gin.Context) {
@@ -51,7 +47,7 @@ func MoveRobot(c *gin.Context) {
 	columnInt := Column[column]
 	faceDir := strings.ToLower(Face[face])
 
-	moveRow, moveCol, moveFace, err := MoveRobotState(rowInt, columnInt, faceDir, false)
+	moveRow, moveCol, moveFace, err := MoveRobotState(rowInt, columnInt, faceDir)
 	moveColLetter, errColLetter := ReturnKeyFromValueMap(Column, moveCol)
 
 	if err != nil {
@@ -69,19 +65,27 @@ func MoveRobot(c *gin.Context) {
 			"robot_face":   moveFace,
 		})
 	} else {
-		Board[rowInt][columnInt] = "e:e"
-		Board[moveRow][moveCol] = fmt.Sprintf("r:%s", moveFace)
+		// check if the cell is empty because robots can only move to empty cells
+		if CheckCell(moveRow, moveCol) {
+			Board[rowInt][columnInt] = "e:e"
+			Board[moveRow][moveCol] = fmt.Sprintf("r:%s", moveFace)
 
-		c.JSON(http.StatusCreated, gin.H{
-			"msg": fmt.Sprintf("Robot moved to row %d, column %s and face %s",
-				moveRow+1, moveColLetter, face),
-			"robot_row":    rowInt,
-			"robot_column": moveCol,
-			"robot_face":   faceDir,
-		})
+			c.JSON(http.StatusCreated, gin.H{
+				"msg": fmt.Sprintf("Robot moved to row %d, column %s and face %s",
+					moveRow+1, moveColLetter, face),
+				"robot_row":    rowInt,
+				"robot_column": moveCol,
+				"robot_face":   faceDir,
+			})
+		} else {
+			c.JSON(http.StatusBadRequest, gin.H{
+				"msg":          fmt.Sprintf("Cell is not empty, robot cannot move"),
+				"robot_row":    moveRow,
+				"robot_column": moveCol,
+				"robot_face":   faceDir,
+			})
+		}
 	}
-
-	fmt.Println(Board)
 }
 
 func AttackRobot(c *gin.Context) {
@@ -96,7 +100,7 @@ func AttackRobot(c *gin.Context) {
 	columnInt := Column[column]
 	faceDir := strings.ToLower(Face[face])
 
-	moveRow, moveCol, moveFace, err := MoveRobotState(rowInt, columnInt, faceDir, true)
+	moveRow, moveCol, moveFace, err := MoveRobotState(rowInt, columnInt, faceDir)
 	moveColLetter, errColLetter := ReturnKeyFromValueMap(Column, moveCol)
 
 	if err != nil {
@@ -132,6 +136,4 @@ func AttackRobot(c *gin.Context) {
 			"robot_face":   faceDir,
 		})
 	}
-
-	fmt.Println(Board)
 }
