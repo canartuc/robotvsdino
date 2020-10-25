@@ -15,7 +15,7 @@ func PerformRequest(r http.Handler, method, path string) *httptest.ResponseRecor
 }
 
 func CheckLowerUpperBound(row int, col int) bool {
-	if (row < UPPERBOUND + 1 && row >= LOWERBOUND) || (col < UPPERBOUND + 1 && col >= LOWERBOUND) {
+	if (row < UPPERBOUND+1 && row >= LOWERBOUND) || (col < UPPERBOUND+1 && col >= LOWERBOUND) {
 		return true
 	}
 	return false
@@ -75,7 +75,7 @@ func ReturnKeyFromValueMap(m map[string]int, val int) (key string, err error) {
 }
 
 // MoveRobotState is the state machine of robot movement
-func MoveRobotState(row int, column int, face string) (newRow int, newColumn int, newFace string, err error) {
+func MoveRobotState(row int, column int, face string, attack bool) (newRow int, newColumn int, newFace string, err error) {
 	if CheckType(row, column) == "r" {
 		if strings.ToLower(face) == "east" {
 			newRow = row
@@ -115,11 +115,19 @@ func MoveRobotState(row int, column int, face string) (newRow int, newColumn int
 		newFace = face
 		err = errors.New("out of index boundries")
 	}
-	if !CheckCell(newRow, newColumn) {
-		newRow = row
-		newColumn = column
-		newFace = face
-		err = errors.New("robot can move to only empty cell")
+	if attack {
+		if CheckType(newRow, newColumn) == "d" {
+			err = nil
+		}
+
+	} else {
+		if !CheckCell(newRow, newColumn) {
+			newRow = row
+			newColumn = column
+			newFace = face
+			err = errors.New("robot can move to only empty cell")
+		}
 	}
+
 	return
 }

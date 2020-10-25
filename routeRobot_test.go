@@ -27,10 +27,10 @@ func TestCreateRobot(t *testing.T) {
 
 	// TODO: Rather than hiding ResponseStruct here in test, we can use it globally for responses rather than hardcoded
 	type ResponseStruct struct {
-		Msg string `json:"msg"`
-		RobotRow int `json:"robot_row"`
-		RobotColumn int `json:"robot_column"`
-		RobotFace string `json:"robot_face"`
+		Msg         string `json:"msg"`
+		RobotRow    int    `json:"robot_row"`
+		RobotColumn int    `json:"robot_column"`
+		RobotFace   string `json:"robot_face"`
 	}
 
 	var resMap ResponseStruct
@@ -40,7 +40,7 @@ func TestCreateRobot(t *testing.T) {
 	}
 
 	expectedResRow := 38
-	expectedResCol :=  28
+	expectedResCol := 28
 	expectedResFace := "east"
 
 	if resMap.RobotColumn != expectedResCol ||

@@ -14,15 +14,15 @@ const REQUESTGROUP = "/api/v1"
 // BOARDGROUP, ROBOTGROUP and DINOSAURGROUP defines URL request grouping after REQUESTGROUP
 // http(s)://IP_OR_DOMAIN:PORT/REQUESTGROUP/[BOARDGROUP||ROBOTGROUP||DINOSAURGROUP]/ACTION/WHATEVERTHEREST
 const (
-	BOARDGROUP = "/board"
-	ROBOTGROUP = "/robot"
+	BOARDGROUP    = "/board"
+	ROBOTGROUP    = "/robot"
 	DINOSAURGROUP = "/dinosaur"
 )
 
 // Board is global scope variable and the main unit to play on
 // We define here as we will share this structure with dinosaur and robot because there is no long term storage
 // in this project but temporary.
-var Board = make([][]string, UPPERBOUND + 1)
+var Board = make([][]string, UPPERBOUND+1)
 
 // In programming, row and column define as integer value but in human world, we are using letter for Column
 // for games generally - for example: Chess board
