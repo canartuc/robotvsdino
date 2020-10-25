@@ -5,6 +5,7 @@ import (
 	"testing"
 )
 
+//TestMoveRobotState tests the request of robot movement and handles response to determine failure for edge cases
 func TestMoveRobotState(t *testing.T) {
 	InitBoard()
 	// Test edge cases for movement - This is not a regular test so we are forcing to fail here

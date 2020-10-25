@@ -8,6 +8,7 @@ import (
 	"testing"
 )
 
+// TestCreateDinosaur tests dinosaur creation by sending request and manages test results by manipulating response
 func TestCreateDinosaur(t *testing.T) {
 	InitBoard()
 

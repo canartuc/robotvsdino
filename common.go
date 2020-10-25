@@ -76,6 +76,7 @@ func CheckBoardInit() bool {
 	return res
 }
 
+// GetBoardStatus returns the board status as structure. It is extensive information for what's going on
 func GetBoardStatus() BoardStatus {
 	var bs BoardStatus
 	bs.TotalEmpty = 0
@@ -166,8 +167,5 @@ func MoveRobotState(row int, column int, face string) (newRow int, newColumn int
 		newFace = face
 		err = errors.New("out of index boundries")
 	}
-
-	// Robots can also attack. Normally robot cannot move to any other cell if the cell is not empty but in attack mode
-	// robot can move to non-empty cell which is allocated with dinosaur
 	return
 }

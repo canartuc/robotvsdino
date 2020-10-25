@@ -8,6 +8,7 @@ import (
 	"strings"
 )
 
+// CreateRobot creates robot if the cell is empty
 func CreateRobot(c *gin.Context) {
 	row := c.Params.ByName("row")
 	column := strings.ToUpper(c.Params.ByName("column"))
@@ -35,6 +36,7 @@ func CreateRobot(c *gin.Context) {
 	}
 }
 
+// MoveRobot manages movement of the robot based on cell emptiness
 func MoveRobot(c *gin.Context) {
 	row := c.Params.ByName("row")
 	column := strings.ToUpper(c.Params.ByName("column"))
@@ -88,6 +90,7 @@ func MoveRobot(c *gin.Context) {
 	}
 }
 
+// AttackRobot manages robot attacks based on dinosaur availability around
 func AttackRobot(c *gin.Context) {
 	row := c.Params.ByName("row")
 	column := strings.ToUpper(c.Params.ByName("column"))

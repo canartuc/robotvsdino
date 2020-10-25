@@ -8,6 +8,7 @@ import (
 	"testing"
 )
 
+// TestCreateRobot tests robot creation by sending dummy request and manipulating response
 func TestCreateRobot(t *testing.T) {
 	InitBoard()
 

@@ -8,6 +8,7 @@ import (
 	"strings"
 )
 
+// CreateDinosaur creates dinosaur based on condition as if cell is empty or not
 func CreateDinosaur(c *gin.Context) {
 	row := c.Params.ByName("row")
 	column := strings.ToUpper(c.Params.ByName("column"))
