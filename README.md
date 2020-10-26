@@ -85,6 +85,9 @@ wanted the game to be played by using just a basic web browser rather than `curl
 be so meaningful alone. 
 5. There are no hard checks about parameters that player supplied. This app assumes that player knows how to play. App won't 
 stop because of weird inputs but your requests may return response codes 5xx.
+6. There is no long term storage for tracking/auditing. I intentionally left it undeveloped because I didn't want to 
+create complications to create folder on file system or mount storage for Docker. As a result, you would not see logging 
+mechanism and development in middleware.
 
 ## Removing Ambiguity
 In the question, it says:
