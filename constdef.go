@@ -7,7 +7,7 @@ const (
 	UPPERBOUND = 49
 )
 
-// In future, if there will be new version and deprecation notices, REQUESTGROUP will save the life or helps
+// REQUESTGROUP: In future, if there will be new version and deprecation notices, this parameter can be used
 // for canary releases. http(s)://IP_OR_DOMAIN:PORT/REQUESTGROUP/WHATEVERTHEREST
 const REQUESTGROUP = "/api/v1"
 
