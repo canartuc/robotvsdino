@@ -11,7 +11,7 @@ func CreateBoard(c *gin.Context) {
 	if CheckBoardInit() {
 		InitBoard()
 		c.JSON(http.StatusCreated, gin.H{
-			"msg": fmt.Sprintf("%dx%d Board has been created", UPPERBOUND +1, UPPERBOUND +1),
+			"msg": fmt.Sprintf("%dx%d Board has been created", UPPERBOUND+1, UPPERBOUND+1),
 		})
 	} else {
 		c.JSON(http.StatusBadRequest, gin.H{

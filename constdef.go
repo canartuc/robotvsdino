@@ -7,8 +7,8 @@ const (
 	UPPERBOUND = 49
 )
 
-// REQUESTGROUP: In future, if there will be new version and deprecation notices, this parameter can be used
-// for canary releases. http(s)://IP_OR_DOMAIN:PORT/REQUESTGROUP/WHATEVERTHEREST
+// REQUESTGROUP In future, if there will be new version and deprecation notices, this parameter can be used
+//for canary releases. http(s)://IP_OR_DOMAIN:PORT/REQUESTGROUP/WHATEVERTHEREST
 const REQUESTGROUP = "/api/v1"
 
 // BOARDGROUP, ROBOTGROUP and DINOSAURGROUP defines URL request grouping after REQUESTGROUP
@@ -24,8 +24,8 @@ const (
 // in this project but temporary.
 var Board = make([][]string, UPPERBOUND+1)
 
-// In programming, row and column define as integer value but in human world, we are using letter for Column
-// for games generally - for example: Chess board
+// Column : In programming, row and column define as integer value but in human world, we are using letter for columns
+// in games generally - for example: Chess board
 var Column = map[string]int{
 	"A":  0,
 	"B":  1,
